@@ -968,5 +968,6 @@ MonoBehaviour:
   parent: {fileID: 1858780039}
   rotSpeed: 200
   zoomSpeed: 200
-  maxAngleX: 35
-  maxAngleY: 10
+  maxDepth: 10
+  maxAngleX: 50
+  maxAngleY: 35
