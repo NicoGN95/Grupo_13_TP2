@@ -14,6 +14,8 @@ public class MenuManager : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitButtonClicked);
         
         playButton.Select();
+
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void OnPlayButtonClicked()

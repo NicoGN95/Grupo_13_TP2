@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1260506719}
   inputs: {fileID: 1235328416}
-  rotSpeed: 200
+  rotSpeed: 100
   zoomSpeed: 100
   maxDepth: 10
   maxAngleX: 25

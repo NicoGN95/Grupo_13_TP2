@@ -1,5 +1,7 @@
-﻿using _main.Scripts.Services;
+﻿using System;
+using _main.Scripts.Services;
 using _main.Scripts.Services.MicroServices.EventsServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,8 +18,8 @@ namespace _Main.Scripts
         [SerializeField] private float maxAngleY;
         
         
-        private float m_currRotX = 0f;
-        private float m_currRotY = 0f;
+        private float m_currRotX;
+        private float m_currRotY;
         private float m_currMovementCount;
         private bool m_isCameraUnlocked;
 
@@ -28,12 +30,13 @@ namespace _Main.Scripts
             var l_rotation = parent.transform.rotation;
             maxAngleX += l_rotation.x;
             maxAngleY += l_rotation.y;
-
-            SuscribeEvents();
+            m_currRotX = l_rotation.x;
+            m_currRotY = l_rotation.y;
+            SubscribeEvents();
 
         }
 
-        private void SuscribeEvents()
+        private void SubscribeEvents()
         {
             var l_actions = inputs.actions;
 
@@ -43,7 +46,20 @@ namespace _Main.Scripts
             l_actions["UnlockCamera"].canceled += UnlockCamera;
         }
 
-        
+        private void UnsubscribeEvents()
+        {
+            var l_actions = inputs.actions;
+
+            l_actions["Zoom"].performed -= ZoomUpdate;
+            l_actions["CameraRot"].performed -= RotationUpdate;
+            l_actions["UnlockCamera"].performed -= UnlockCamera;
+            l_actions["UnlockCamera"].canceled -= UnlockCamera;
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeEvents();
+        }
 
 
         private void RotationUpdate(InputAction.CallbackContext p_obj)
@@ -108,6 +124,10 @@ namespace _Main.Scripts
 
                     break;
             }
+            
+            
+            
+            
         }
         
         private struct CameraPos : ICustomEventData
