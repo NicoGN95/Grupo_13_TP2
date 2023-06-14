@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UnlockCamera",
+                    "type": "Value",
+                    "id": "67a9d31a-1f58-42b7-9d24-ec4a0f4832b0",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -341,7 +350,7 @@
                     "id": "98be8784-f640-4799-96ea-a1d3cdf09204",
                     "path": "2DVector",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "groups": "",
                     "action": "CameraRot",
                     "isComposite": true,
@@ -390,6 +399,17 @@
                     "action": "CameraRot",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "2f7b1275-4163-417e-9433-8439b7b9a41e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UnlockCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

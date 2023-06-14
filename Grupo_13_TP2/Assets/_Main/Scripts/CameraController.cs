@@ -19,6 +19,7 @@ namespace _Main.Scripts
         private float m_currRotX = 0f;
         private float m_currRotY = 0f;
         private float m_currMovementCount;
+        private bool m_isCameraUnlocked;
 
         private IEventService Service => ServiceLocator.Get<IEventService>();
         
@@ -38,13 +39,18 @@ namespace _Main.Scripts
 
             l_actions["Zoom"].performed += ZoomUpdate;
             l_actions["CameraRot"].performed += RotationUpdate;
+            l_actions["UnlockCamera"].performed += UnlockCamera;
+            l_actions["UnlockCamera"].canceled += UnlockCamera;
         }
-        
 
+        
 
 
         private void RotationUpdate(InputAction.CallbackContext p_obj)
         {
+            
+            if(!m_isCameraUnlocked)
+                return;
             var l_mouseValue = p_obj.ReadValue<Vector2>();
             
             
@@ -57,9 +63,21 @@ namespace _Main.Scripts
 
             parent.transform.rotation = Quaternion.Euler(m_currRotY, m_currRotX, 0);
         }
+        
+        private void UnlockCamera(InputAction.CallbackContext p_obj)
+        {
+            var l_value = p_obj.ReadValue<float>();
+            m_isCameraUnlocked = l_value > 0;
 
+            Cursor.lockState = m_isCameraUnlocked ? CursorLockMode.Locked : CursorLockMode.Confined;
+
+        }
+        
         private void ZoomUpdate(InputAction.CallbackContext p_obj)
         {
+            if(!m_isCameraUnlocked)
+                return;
+            
             var l_mouseWheel = p_obj.ReadValue<float>();
             
             
@@ -69,14 +87,12 @@ namespace _Main.Scripts
                 case > 0:
                     if(m_currMovementCount >= maxDepth) 
                         return;
+                    
                     var l_traslationPositive = transform.forward * (zoomSpeed * Time.deltaTime);
                     transform.position += l_traslationPositive;
                     m_currMovementCount += l_traslationPositive.magnitude;
                     
-                    
                     Service.DispatchEvent(new CameraPos(transform.position));
-                    
-                    
                     break;
                 
                 
@@ -88,10 +104,8 @@ namespace _Main.Scripts
                     transform.position += l_traslationNegative;
                     m_currMovementCount -= l_traslationNegative.magnitude;
                     
-                    
                     Service.DispatchEvent(new CameraPos(transform.position));
-                    
-                    
+
                     break;
             }
         }
