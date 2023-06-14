@@ -1360,6 +1360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1260506719}
+  inputs: {fileID: 1235328416}
   rotSpeed: 200
   zoomSpeed: 100
   maxDepth: 10
@@ -1434,6 +1435,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 370da09266ddcf84ebf4ea73f657a0bc, type: 3}
+--- !u!114 &1235328416 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6618493692867088723, guid: 370da09266ddcf84ebf4ea73f657a0bc, type: 3}
+  m_PrefabInstance: {fileID: 1092382762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1260506719
 GameObject:
   m_ObjectHideFlags: 0

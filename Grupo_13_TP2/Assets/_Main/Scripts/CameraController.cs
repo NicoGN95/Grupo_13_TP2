@@ -1,19 +1,21 @@
 ﻿using _main.Scripts.Services;
 using _main.Scripts.Services.MicroServices.EventsServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Main.Scripts
 {
     public class CameraController : MonoBehaviour
     {
         [SerializeField] private GameObject parent;
+        [SerializeField] private PlayerInput inputs;
         [SerializeField] private float rotSpeed;
         [SerializeField] private float zoomSpeed;
         [SerializeField] private float maxDepth;
         [SerializeField] private float maxAngleX;
         [SerializeField] private float maxAngleY;
-
-
+        
+        
         private float m_currRotX = 0f;
         private float m_currRotY = 0f;
         private float m_currMovementCount;
@@ -25,24 +27,30 @@ namespace _Main.Scripts
             var l_rotation = parent.transform.rotation;
             maxAngleX += l_rotation.x;
             maxAngleY += l_rotation.y;
+
+            SuscribeEvents();
+
         }
 
-        private void Update()
+        private void SuscribeEvents()
         {
-            RotationUpdate();
+            var l_actions = inputs.actions;
 
-            ZoomUpdate();
+            l_actions["Zoom"].performed += ZoomUpdate;
+            l_actions["CameraRot"].performed += RotationUpdate;
         }
+        
 
 
 
-        private void RotationUpdate()
+        private void RotationUpdate(InputAction.CallbackContext p_obj)
         {
-            var l_mouseX = Input.GetAxis("Mouse X");
-            var l_mouseY = Input.GetAxis("Mouse Y");
+            var l_mouseValue = p_obj.ReadValue<Vector2>();
             
-            m_currRotX += l_mouseX * rotSpeed * Time.deltaTime;
-            m_currRotY -= l_mouseY * rotSpeed * Time.deltaTime;
+            
+            
+            m_currRotX += l_mouseValue.x * rotSpeed * Time.deltaTime;
+            m_currRotY -= l_mouseValue.y * rotSpeed * Time.deltaTime;
 
             m_currRotX = Mathf.Clamp(m_currRotX, -maxAngleX, maxAngleX);
             m_currRotY = Mathf.Clamp(m_currRotY, -maxAngleY, maxAngleY);
@@ -50,9 +58,11 @@ namespace _Main.Scripts
             parent.transform.rotation = Quaternion.Euler(m_currRotY, m_currRotX, 0);
         }
 
-        private void ZoomUpdate()
+        private void ZoomUpdate(InputAction.CallbackContext p_obj)
         {
-            var l_mouseWheel = Input.GetAxis("Mouse ScrollWheel");
+            var l_mouseWheel = p_obj.ReadValue<float>();
+            
+            
 
             switch (l_mouseWheel)
             {
