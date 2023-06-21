@@ -1,8 +1,4 @@
-﻿using System;
-using _main.Scripts.Services;
-using _main.Scripts.Services.MicroServices.EventsServices;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace _Main.Scripts
@@ -23,7 +19,6 @@ namespace _Main.Scripts
         private float m_currMovementCount;
         private bool m_isCameraUnlocked;
 
-        private IEventService Service => ServiceLocator.Get<IEventService>();
         
         private void Start()
         {
@@ -108,7 +103,6 @@ namespace _Main.Scripts
                     transform.position += l_traslationPositive;
                     m_currMovementCount += l_traslationPositive.magnitude;
                     
-                    Service.DispatchEvent(new CameraPos(transform.position));
                     break;
                 
                 
@@ -119,24 +113,9 @@ namespace _Main.Scripts
                     var l_traslationNegative = -transform.forward * (zoomSpeed * Time.deltaTime);
                     transform.position += l_traslationNegative;
                     m_currMovementCount -= l_traslationNegative.magnitude;
-                    
-                    Service.DispatchEvent(new CameraPos(transform.position));
 
                     break;
             }
-            
-            
-            
-            
-        }
-        
-        private struct CameraPos : ICustomEventData
-        {
-            public CameraPos(Vector3 p_pos)
-            {
-                Pos = p_pos;
-            }
-            public Vector3 Pos;
         }
     }
 }
